@@ -1,9 +1,6 @@
 const { Telegraf } = require('telegraf')
 const { message } = require('telegraf/filters')
 const Jimp = require("jimp");
-
-const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN)
-
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN)
 bot.on(message('sticker'), (ctx) => ctx.reply('вы ввели не число, введите число.'))
 
