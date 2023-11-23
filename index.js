@@ -1,3 +1,4 @@
+require('dotenv').config()
 const { Telegraf } = require('telegraf')
 const { message } = require('telegraf/filters')
 const Jimp = require("jimp");
@@ -42,12 +43,9 @@ bot.on(message('text'), async (ctx) => {
         await ctx.reply("введите шестизначное число.");
     }
   })
-exports.handler = async event => {
-  try {
-    await bot.handleUpdate(JSON.parse(event.body));
-    return { statusCode: 200, body: '' };
-  } catch (e) {
-    console.log(e)
-    return { statusCode: 400, body: 'This endpoint is meant for bot and telegram communication' };
-  }
-}
+
+bot.launch()
+
+// Enable graceful stop
+process.once('SIGINT', () => bot.stop('SIGINT'))
+process.once('SIGTERM', () => bot.stop('SIGTERM'))
