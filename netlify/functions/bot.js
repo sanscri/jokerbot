@@ -1,4 +1,4 @@
-const Telegraf = require('telegraf');
+const { Telegraf } = require('telegraf')
 exports.handler = async (event) => {
     console.log("Received an update from Telegram!", event.body);
     return { statusCode: 200 };
