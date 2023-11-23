@@ -15,8 +15,7 @@ const checkCorrectNumber = (number) => {
 }
 
 const addTextToImage = async (text, username, ctx) => {
-    const fileName = './img/foto.jpg';
-    const fileName1 = `./img/${username}.jpg`;
+    const fileName = '../../img/foto.jpg';
     let loadedImage = await Jimp.read(fileName);
     const font = await Jimp.loadFont(Jimp.FONT_SANS_64_BLACK);
     loadedImage = loadedImage.rotate(-90).print(font, 80, 1100, text)
