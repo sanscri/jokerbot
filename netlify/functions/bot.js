@@ -6,9 +6,11 @@ exports.handler = async (event) => {
 
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 
-bot.start(ctx => {
-    return ctx.reply(`hello`)
-})
+bot.on(message('text'), async (ctx) => {
+    // Using context shortcut
+    await ctx.replyWithPhoto({ source: '/img/foto.jpeg' });
+    await ctx.reply(ctx.message.text);
+  })
 
 exports.handler = async event => {
   try {
