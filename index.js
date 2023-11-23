@@ -19,13 +19,8 @@ const checkCorrectNumber = (number) => {
 const addTextToImage = async (text, username, ctx) => {
    // const fileName = './img/foto.jpg';
     const fileName = process.env.PHOTO_URL;
-    const response = await axios.get(fileName, { responseType: 'arraybuffer' });
-    let blob = new Blob(
-        [response.data], 
-        { type: response.headers['content-type'] }
-      )
-      let initImage = URL.createObjectURL(blob);
-    let loadedImage = await Jimp.read(initImage);
+
+    let loadedImage = await Jimp.read(process.env.PHOTO_URL);
     const font = await Jimp.loadFont(Jimp.FONT_SANS_64_BLACK);
     loadedImage = loadedImage.rotate(-90).print(font, 80, 1100, text)
     .print(font, 80, 1000, username).rotate(90);
