@@ -1,0 +1,2 @@
+[build] 
+command = "cp ./libx86/* node_modules/canvas/build/Release/"
