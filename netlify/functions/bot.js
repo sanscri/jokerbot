@@ -55,7 +55,7 @@ bot.on(message('text'), async (ctx) => {
 
 bot.command('start', async (ctx) => {
     await ctx.reply("Приветсвтуем в нашем боте!");
-    return await ctx.reply('Привиет', Markup
+    return await ctx.reply('Привет', Markup
       .keyboard([
         ['получить билет'],
       ])
