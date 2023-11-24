@@ -1,7 +1,22 @@
-const { Telegraf } = require('telegraf')
+require('dotenv').config()
+const { Telegraf, Markup } = require("telegraf");
 const { message } = require('telegraf/filters')
 const Jimp = require("jimp");
+const axios = require('axios');
+const { createGzip } = require('zlib');
+
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN)
+
+
+bot.start(async (ctx) => {
+    return await ctx.reply('Привет, если вы хотите сгенерировать билет, то получите нажмите на кнопку "получить билет"', Markup
+      .keyboard([
+        ['получить билет'],
+      ])
+      .oneTime()
+      .resize()
+    )
+  })
 bot.on(message('sticker'), (ctx) => ctx.reply('вы ввели не число, введите число.'))
 
 const isNumber = (userInput) => {
@@ -25,9 +40,6 @@ const addTextToImage = async (text, username, ctx) => {
 }
 
 bot.on(message('text'), async (ctx) => {
-    if(ctx.message.text == "/start") {
-        return await ctx.reply("Приветствуем в нашем боте!");
-    }
     if(ctx.message.text === "получить билет" ) {
         return await ctx.reply("введите в одном сообщении ник и 6 цифр через пробел.");
     }
@@ -53,16 +65,6 @@ bot.on(message('text'), async (ctx) => {
 })
 
 
-bot.command('start', async (ctx) => {
-    await ctx.reply("Приветсвтуем в нашем боте!");
-    return await ctx.reply('Привет', Markup
-      .keyboard([
-        ['получить билет'],
-      ])
-      .oneTime()
-      .resize()
-    )
-  })
 exports.handler = async event => {
   try {
     await bot.handleUpdate(JSON.parse(event.body));
@@ -72,3 +74,14 @@ exports.handler = async event => {
     return { statusCode: 400, body: 'This endpoint is meant for bot and telegram communication' };
   }
 }
+
+/**
+ * 
+bot.launch()
+
+// Enable graceful stop
+process.once('SIGINT', () => bot.stop('SIGINT'))
+process.once('SIGTERM', () => bot.stop('SIGTERM'))
+
+
+ */

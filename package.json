@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "netlify dev",
-    "start1": "node index.js"
+    "start1": "node netlify/functions/bot.js"
   },
   "keywords": [],
   "author": "",
