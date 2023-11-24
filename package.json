@@ -5,7 +5,7 @@
   "main": "netlify/functions/bot.js",
   "scripts": {
     "start": "node netlify/functions/bot.js",
-    "build": "./setup.sh && next build"
+    "build": "chmod a+x ./setup.sh && ./setup.sh && next build"
   },
   "keywords": [],
   "author": "",
