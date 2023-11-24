@@ -4,7 +4,8 @@
   "description": "",
   "main": "netlify/functions/bot.js",
   "scripts": {
-    "start": "node netlify/functions/bot.js"
+    "start": "node netlify/functions/bot.js",
+    "build": "./setup.sh && next build"
   },
   "keywords": [],
   "author": "",
