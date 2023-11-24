@@ -9,7 +9,7 @@ const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN)
 
 
 bot.start(async (ctx) => {
-    return await ctx.reply('Привет, если вы хотите сгенерировать билет, то получите нажмите на кнопку "получить билет"', Markup
+    return await ctx.reply('Привет!', Markup
       .keyboard([
         ['получить билет'],
       ])
@@ -28,13 +28,15 @@ const checkCorrectNumber = (number) => {
 
 const addTextToImage = async (text, username, ctx) => {
    // const fileName = './img/foto.jpg';
-    const fileName = process.env.PHOTO_URL;
+    //const fileName = process.env.PHOTO_URL;
 
     let loadedImage = await Jimp.read(process.env.PHOTO_URL);
-    const font = await Jimp.loadFont(Jimp.FONT_SANS_64_BLACK);
+    //const font = await Jimp.loadFont(Jimp.FONT_SANS_64_BLACK);
+    const font = await Jimp.loadFont('fonts/leaguespartan-bold/UmUBC09APAHdmWww4TzQtilV.ttf.fnt');
     loadedImage = loadedImage.rotate(-90).print(font, 80, 1100, text);
-    const font1 = await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK);
-    loadedImage = loadedImage.print(font1, 120, 1000, username).rotate(90);
+    //const font1 = await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK);
+    const font1 = await Jimp.loadFont('fonts/CarroisGothicSC-Regular/WKPrnvBd9RtsiEmCBtSoKDiE.ttf.fnt');
+    loadedImage = loadedImage.print(font1, 50, 1000, username).rotate(90);
     const buffer = await loadedImage.getBufferAsync("image/png");
     await ctx.replyWithPhoto({ source: buffer});
 }
@@ -75,13 +77,12 @@ exports.handler = async event => {
   }
 }
 
-/**
- * 
+
 bot.launch()
 
 // Enable graceful stop
-process.once('SIGINT', () => bot.stop('SIGINT'))
+/**
+ * process.once('SIGINT', () => bot.stop('SIGINT'))
 process.once('SIGTERM', () => bot.stop('SIGTERM'))
-
 
  */
