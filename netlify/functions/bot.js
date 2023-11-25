@@ -1,14 +1,16 @@
 require('dotenv').config()
-const { Telegraf, Markup } = require("telegraf");
+const { Telegraf, Markup, session } = require("telegraf");
 const { message } = require('telegraf/filters')
 const Jimp = require("jimp");
 const fs = require("fs");
 const { createCanvas, loadImage } = require("canvas");
  
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN)
+bot.use(session());
 
 
 bot.start(async (ctx) => {
+  ctx.session ??= { wait: 'empty' };
     return await ctx.reply('Привет!', Markup
       .keyboard([
         ['получить билет'],
@@ -22,8 +24,20 @@ bot.on(message('sticker'), (ctx) => ctx.reply('вы ввели не число, 
 const isNumber = (userInput) => {
     return !isNaN(Number(userInput));
 }
+
 const checkCorrectNumber = (number) => {
-    return 100000 <= number && number <= 999999;
+  let count = 0;
+  while(number > 0) {
+      const a = number % 10;
+    
+      if(a == 0 || a > 6) {
+          return  false;
+      }
+      count = count + 1;
+      number = Math.floor(number / 10);
+  }
+  return count === 6;
+//  return 100000 <= number && number <= 999999;
 }
 
 const addTextToImage = async (text, username, ctx) => {
@@ -62,41 +76,43 @@ const addTextToImage1 = async (text, username, ctx) => {
   context.fillText(username, -220, -200);
   context.restore();
   const stream = canvas.createPNGStream();
-  await ctx.replyWithPhoto({ source: stream});
+  return stream;
 }
 
 bot.on(message('text'), async (ctx) => {
-    if(ctx.message.text === "получить билет" ) {
-        return await ctx.reply("введите в одном сообщении ник и 6 цифр через пробел.");
-    }
-    if(ctx.message.text != "получить билет" && ctx.message.text != "/start") {
-        const message = ctx.message.text.split(' ');
-        if(message.length != 2){
-            return await ctx.reply("вы ввели неккоректное количество параметров");
-        }
-        if(!isNumber(message[1])) {
-            return await ctx.reply("вторым параметром вы ввели не число, введите число.");
-        } 
-    
-        if(checkCorrectNumber(Number(message[1]))) {
-            const text = message[1];
-            const username = message[0];
-            await ctx.reply("Ваш билет генерируется, подождите какое-то время");
-            addTextToImage1(text, username, ctx);
-        } else {
-            await ctx.reply("введите шестизначное число.");
-        }
-    }
+  ctx.session ??= { wait: 'empty' };
+  if(ctx.message.text === "получить билет" ) { 
+    ctx.session.wait = 'username';
+    return await ctx.reply("введите ник, который хотите видеть на билете");
+  }
+  if(ctx.session.wait === "username") {
+    ctx.session.username = ctx.message.text;
+    ctx.session.wait = "number"
+    return await ctx.reply("введите 6 цифр (каждая в диапазоне от 1 до 6)");
+  }
 
+  if(ctx.session.wait === "number") {
+    if(!isNumber(ctx.message.text)) {
+      return await ctx.reply("вы ввели не число, введите число.");
+    }
+    if(checkCorrectNumber(Number(ctx.message.text))) {
+      await ctx.reply("Ваш билет создаётся, подождите какое-то время");
+      const stream = await addTextToImage1(ctx.message.text, ctx.session.username, ctx);
+      ctx.session.wait = "empty";
+      return await ctx.replyWithPhoto({ source: stream});
+    } else {
+      return await ctx.reply("число неккоректно, введите другое.");
+    }
+  }
 })
 
-/**
- * bot.launch()
+bot.launch()
 process.once('SIGINT', () => bot.stop('SIGINT'))
 process.once('SIGTERM', () => bot.stop('SIGTERM'))
-*/
 
- exports.handler = async event => {
+/**
+ * 
+ *  exports.handler = async event => {
   try {
     await bot.handleUpdate(JSON.parse(event.body));
     return { statusCode: 200, body: '' };
@@ -105,3 +121,5 @@ process.once('SIGTERM', () => bot.stop('SIGTERM'))
     return { statusCode: 400, body: 'This endpoint is meant for bot and telegram communication' };
   }
 }
+
+ */

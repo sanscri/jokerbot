@@ -1,5 +1,5 @@
 yum install wget
-yum install patchelf
+
 wget https://github.com/NixOS/patchelf/archive/refs/tags/0.17.0.tar.gz
 tar -xf 0.17.0.tar.gz
 cd patchelf-0.17.0
