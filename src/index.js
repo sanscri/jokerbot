@@ -19,14 +19,15 @@ bot.start(async (ctx) => {
   return await ctx.reply('Привет!', Markup
     .keyboard([
       ['🎫 участвовать в Q ЛОТТО'],
-      ['связаться с Джокером🃏']
+      ['связаться с Джокером🃏'],
+      [Markup.button.webApp("смотреть аниме", "https://anixart.me/")]
     ])
     .oneTime()
     .resize(),
     Markup.removeKeyboard(true)
   )
 })
-bot.on(message('sticker'), (ctx) => ctx.reply('вы ввели не число, введите число.'))
+bot.on(message('sticker'), (ctx) => ctx.reply('смотреть аниме', 'вы ввели не число, введите число.'))
 
 const isNumber = (userInput) => {
   return !isNaN(Number(userInput));
