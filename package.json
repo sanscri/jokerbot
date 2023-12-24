@@ -1,22 +1,21 @@
 {
-  "name": "jokerbot",
+  "name": "nodejs",
   "version": "1.0.0",
   "description": "",
-  "main": "netlify/functions/bot.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node netlify/functions/bot.js",
-    "build": "chmod a+x ./setup.sh && ./setup.sh && next build"
+    "start": "node ./src/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "canvas": "^2.11.0",
-    "fs": "^0.0.1-security",
+    "@types/node": "^18.0.6",
+    "canvas": "^2.11.2",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
     "jimp": "^0.22.10",
+    "node-fetch": "^3.2.6",
     "telegraf": "^4.15.0"
-  },
-  "devDependencies": {
-    "dotenv": "^16.3.1"
   }
 }
