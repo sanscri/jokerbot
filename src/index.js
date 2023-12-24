@@ -20,7 +20,7 @@ bot.start(async (ctx) => {
     .keyboard([
       ['🎫 участвовать в Q ЛОТТО'],
       ['связаться с Джокером🃏'],
-      [Markup.button.webApp("смотреть аниме", "https://anixart.me/")]
+      [Markup.button.webApp("🔖 смотреть АНИМЕ", "https://anixart.me/")]
     ])
     .oneTime()
     .resize(),
