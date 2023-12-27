@@ -56,15 +56,15 @@ const addTextToImage = async (text, username, ctx) => {
   const context = canvas.getContext("2d");
   context.drawImage(img, 0, 0);
   context.save();
-  context.translate(canvas.width - 1, 0);
-  context.rotate(-Math.PI / 2);
+ // context.translate(canvas.width - 1, 0);
+ // context.rotate(-Math.PI / 2);
   context.font = "64px serif bold";
-  context.fillStyle = "#5b5c3c";
+  context.fillStyle = "white";
   context.textAlign = "center";
-  context.fillText(text, -220, -100);
-  context.font = "32px serif";
+  context.fillText(text, 600, 230);
+  context.font = "48px serif";
   context.textAlign = "center";
-  context.fillText(username, -220, -200);
+  context.fillText(username, 260, 300)
   context.restore();
   const stream = canvas.createPNGStream();
   return stream;
@@ -85,7 +85,7 @@ bot.on(message('text'), async (ctx) => {
   }
   if (ctx.message.text === "🎫 участвовать в Q ЛОТТО") {
     ctx.session.wait = 'username';
-    await ctx.reply("розыгрыш пройдёт 30 ноября в 20:00 по мск на канале @slovo_jokera")
+    await ctx.reply("розыгрыш пройдёт X декабря в X:X по мск на канале @slovo_jokera (время уточняется)")
     return await ctx.reply("введите ник, который хотите видеть на билете");
   }
   if (ctx.session.wait === "username") {
